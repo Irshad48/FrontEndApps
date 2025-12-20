@@ -24,7 +24,7 @@
         );
       }
 
-      function ChatMessages({ message, sender }) {
+      function ChatMessage({ message, sender }) {
         //const message = props.message;
         //const sender = props.sender;
         //destructuring - below line is same as above two lines
@@ -53,26 +53,38 @@
         );
       } 
 
+      function ChatMessages(){
+        const chatMessages = [
+          { message: "hello chatbot", sender: "user", id: "id1" },
+          { message: "Hello! How can I help you?", sender: "robot", id: "id2"  },
+          { message: "can you get me todays date?", sender: "user", id: "id3"  },
+          { message: "Today is December 20", sender: "robot", id: "id4"  },
+        ];
+        function sendMessage() {
+          console.log('send Message');
+          
+        }
+        return(
+          <>
+            <button onClick={sendMessage}>Send message</button>
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessage
+                  message={chatMessage.message} 
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </>
+        );
+      }
+
       function App() {
         return (
           <>
             <ChatInput /> 
-            <ChatMessages 
-              message = "hello chatbot" 
-              sender="user"
-            />
-            <ChatMessages 
-              message = "Hello! How can I help you?" 
-              sender="robot" 
-            />
-            <ChatMessages 
-              message = "can you get me todays date?" 
-              sender="user" 
-            />
-            <ChatMessages 
-              message = "Today is December 20" 
-              sender="robot" 
-            />
+            <ChatMessages />
           </>
         );
       }
