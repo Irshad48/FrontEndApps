@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+
+    <script type="text/babel">
+      //componant should start with capital letter
+      function ChatInput() {
+        return (
+          <>
+            <input 
+              placeholder="Send a message to Chatbot" 
+              size="30" 
+            />
+            <button>Send</button>
+          </>
+        );
+      }
+
+      function ChatMessages({ message, sender }) {
+        //const message = props.message;
+        //const sender = props.sender;
+        //destructuring - below line is same as above two lines
+        //const { message, sender } = props;
+        //destructuring in function parameter - another way - check parameter of function
+
+        /*
+        if(sender === "robot") {
+          return(
+            <div>
+              <img src="robot.png" width="50" />
+              {message}
+            </div>
+          );
+        }*/
+        return (
+          <div>
+            {sender === "robot" && (
+              <img src="robot.png" width="50" />
+            )}
+            {message}
+            {sender=== "user" && (
+              <img src="user.png" width="50" />
+            )}
+          </div>
+        );
+      } 
+
+      function App() {
+        return (
+          <>
+            <ChatInput /> 
+            <ChatMessages 
+              message = "hello chatbot" 
+              sender="user"
+            />
+            <ChatMessages 
+              message = "Hello! How can I help you?" 
+              sender="robot" 
+            />
+            <ChatMessages 
+              message = "can you get me todays date?" 
+              sender="user" 
+            />
+            <ChatMessages 
+              message = "Today is December 20" 
+              sender="robot" 
+            />
+          </>
+        );
+      }
+      
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
