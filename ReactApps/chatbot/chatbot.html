@@ -12,14 +12,31 @@
 
     <script type="text/babel">
       //componant should start with capital letter
-      function ChatInput() {
+      function ChatInput({chatMessages, setChatMessages}) {
+        
+        const [inputText, setInputText] = React.useState(''); //hook - special function provided by react
+        
+        function SaveInputText(event){
+            setInputText(event.target.value); //updating the state variable
+        }
+
+        function sendMessage() {
+           setChatMessages([
+            ...chatMessages, //spread operator - creates a copy of existing array
+            { message: inputText, sender: "user", id: crypto.randomUUID() },
+          ]);
+        }
+        
         return (
           <>
             <input 
               placeholder="Send a message to Chatbot" 
               size="30" 
+              onChange={SaveInputText}
             />
-            <button>Send</button>
+            <button
+             onClick = {sendMessage} 
+            >Send</button>
           </>
         );
       }
@@ -53,20 +70,9 @@
         );
       } 
 
-      function ChatMessages(){
-        const chatMessages = [
-          { message: "hello chatbot", sender: "user", id: "id1" },
-          { message: "Hello! How can I help you?", sender: "robot", id: "id2"  },
-          { message: "can you get me todays date?", sender: "user", id: "id3"  },
-          { message: "Today is December 20", sender: "robot", id: "id4"  },
-        ];
-        function sendMessage() {
-          console.log('send Message');
-          
-        }
+      function ChatMessages({chatMessages}) {  
         return(
           <>
-            <button onClick={sendMessage}>Send message</button>
             {chatMessages.map((chatMessage) => {
               return (
                 <ChatMessage
@@ -81,10 +87,30 @@
       }
 
       function App() {
+        // moved state to App component to share between ChatInput and ChatMessages
+        const [chatMessages, setChatMessages] = React.useState([
+          { message: "hello chatbot", sender: "user", id: "id1" },
+          { message: "Hello! How can I help you?", sender: "robot", id: "id2"  },
+          { message: "can you get me todays date?", sender: "user", id: "id3"  },
+          { message: "Today is December 20", sender: "robot", id: "id4"  },
+        ]);
+        // above line says - create a state variable chatMessages and a function setChatMessages to update it and initialize it with an array of objects
+        // so chatMessages is the current value of the state variable - array of chat message objects
+        // setChatMessages is the function to update the state variable
+        // above way used by react doc - direct way of using useState - cost [,] is array destructuring for below three lines
+        // other possible way - const [chatMessages, setChatMessages] = array; // this is array destructuring.. for below two lines.. order matters
+        // const chatMessages = array[0]; // The current data - entire array
+        // const setChatMessages = array[1]; // The function to update the data - updater function
+
         return (
           <>
-            <ChatInput /> 
-            <ChatMessages />
+            <ChatInput 
+              chatMessages={chatMessages} 
+              setChatMessages={setChatMessages}
+            /> 
+            <ChatMessages 
+              chatMessages={chatMessages}
+            />
           </>
         );
       }
